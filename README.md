@@ -1,7 +1,7 @@
 ## Nama    : Reyhan Zada Virgiwibowo
 ## NPM     : 2206081723
 ## Kelas   : PBP C
-## Link Aplikasi : https://lontongistic.adaptable.app/
+## Link Aplikasi : https://lontongistic.adaptable.app/main/
 
 ### 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 Jawab : 
@@ -20,6 +20,8 @@ Jawab :
 
 ### 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
 Jawab : 
+
+<img src="/images/bagan.png">
 
 ### 3. Jelaskan mengapa kita menggunakan virtual environment? Apakah kita tetap dapat membuat aplikasi web berbasis Django tanpa menggunakan virtual environment?
 Jawab :
@@ -47,7 +49,7 @@ Model View Template adalah pola arsitektur yang menggunakan 3 komponen utama yai
   
 - View : Bagian yang berinteraksi dengan model dan template, mengaplikasikan business logic, dan menghandle request HTTP (web) dan memberikan respons HTTP (web)
   
-- Template : Bagian yang bertugas sebagai User Interface dan menhandle komponen statis seperti HTML untuk me-render data
+- Template : Bagian yang bertugas sebagai User Interface dan menhandle komponen statis seperti HTML untuk  merancang tampilan yang akhirnya akan diisi dengan data
 
 Alur proses dari MVT dimulai ketika user mengirim URL request yang kemudian akan diterima oleh view, lalu view akan menjalankan business logic dan berinteraksi dengan Model untuk mengirimkan data dan template untuk mengahasilkan dokumen HTML yang berisikan data. Kemudian dokumen HTML yang telah dibuat akan dikembalikan oleh View sebagai respons kepada user.
 
