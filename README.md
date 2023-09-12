@@ -23,6 +23,10 @@ Jawab :
 
 <img src="/images/bagan.png">
 
+Penjelasan :
+
+Asumsikan ada client yang melakukan suatu aktivitas pada situs berbasis Django, maka browser akan mengirimkan HTTP Request kepada server situs tersebut dan akan dihandle oleh `urls.py` untuk mencari pattern url yang diinginkan client. Kemudian, framework Django akan menggunakan `views.py` untuk melakukan pengolahan dan operasi logika pada data yang terdapat pada `models.py`. Setelah pengolahan data selesai, maka `views.py` akan mengirimkan file `html` yang terdapat pada `templates` kepada client. Setelah itu browser client akan melakukan proses rendering file `html` yang merupakan HTTP Response.
+ 
 ### 3. Jelaskan mengapa kita menggunakan virtual environment? Apakah kita tetap dapat membuat aplikasi web berbasis Django tanpa menggunakan virtual environment?
 Jawab :
 
