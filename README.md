@@ -15,7 +15,7 @@ Jawab :
 - Menambahkan `path('main/', include('main.urls'))` di `urls.py` didalam `lontongistic` 
 - Membuat model pada `main` dengan nama `Item` dan menambahkan attributes `name`, `amount`, `description`, `category`, `date_added`
 - Membuat function `show_main` dengan context pada `views.py` dengan context `app`, `name`, `class`. Kemudian context tersebut di render pada `main.html` dengan memanggilnya menggunakan `{{app}}`, `{{name}}`, `{{class}}` 
-- Membuat `urls.py` pada `main` dan menambahkan ` app_name = `main` `. Add `path('', show_main, name='show_main')` pada list `urlpatterns`
+- Membuat `urls.py` pada `main` dan menambahkan ` app_name = 'main' `. Add `path('', show_main, name='show_main')` pada list `urlpatterns`
 - Deploy aplikasi web pada Adaptable serta melakukan add, commit, dan push ke repository pada GitHub.
 
 ### 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
