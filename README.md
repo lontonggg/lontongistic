@@ -316,7 +316,7 @@ urlpatterns = [
 
 - JSON by ID
 
-<img src="/images/postman_json_id.png>
+<img src="/images/postman_json_id.png">
 
 - XML
 
@@ -324,4 +324,4 @@ urlpatterns = [
 
 - XML by ID
 
-<img src="/images/postman_xml_id.png>
+<img src="/images/postman_xml_id.png">
