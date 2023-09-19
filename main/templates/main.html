@@ -1,8 +1,42 @@
-<h1 style="text-align: center; font-family:Verdana">Welcome to {{app}}!</h1>
+{% extends 'base.html' %}
 
-<center><img src=https://png.pngtree.com/png-clipart/20220713/ourmid/pngtree-lontong-is-a-traditional-indonesian-food-made-from-rice-vectors-can-png-image_5926993.png alt="An image of a lontong" class="center" style="width:200px;height:200px;"></center>
+{% block content %}
+    <h1>Lontongistic</h1>
+    <h2>Your digital inventory maestro!</h2>
 
-<h2 style="text-align: center; font-family:monospace; font-style: italic; color:lightslategray;">"Your Digital Inventory Maestro!"</h2>
+    <h5>Name:</h5>
+    <p>{{name}}</p>
 
-<p style ="font-family: Verdana;">Name: {{name}}</p>
-<p style ="font-family: Verdana;">Class: {{class}}</p>
+    <h5>Class:</h5>
+    <p>{{class}}</p>
+    <table border = 5px>
+        <tr style="border: 10px; border-color: black; border-radius:10px;">
+            <th align="center">Name</th>
+            <th align="center">Amount</th>
+            <th align="center">Description</th>
+            <th align="center">Category</th>
+            <th align="center">Date Added</th>
+        </tr>
+    
+        {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
+    
+        {% for item in items %}
+            <tr>
+                <td align="center">{{item.name}}</td>
+                <td align="center">{{item.amount}}</td>
+                <td align="center">{{item.description}}</td>
+                <td align="center">{{item.category}}</td>
+                <td align="center">{{item.date_added}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <h5>Anda menyimpan {{items_total}} item pada aplikasi ini</h5>
+    <br />
+    
+    <a href="{% url 'main:create_product' %}">
+        <button>
+            Add New Item
+        </button>
+    </a>
+    
+{% endblock content %}
