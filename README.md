@@ -187,23 +187,7 @@ class ProductForm(ModelForm):
         fields = ["name", "amount", "description", "category"]
 ```
 
-### Menambahkan 5 fungsi views untuk melihat objek yang sudah ditambahkan dalam format HTML, JSON, XML by ID, dan JSON by ID
-
-- Membuat fungsi untuk menerima parameter request yang dapat menambahkan data secara otomatis saat di-submit dengan menambahkan potongan kode berikut pada `forms.py`:
-
-``` python
-def create_product(request):
-    form = ProductForm(request.POST or None)
-
-    if form.is_valid() and request.method == "POST":
-        form.save()
-        return HttpResponseRedirect(reverse('main:show_main'))
-
-    context = {'form': form}
-    return render(request, "create_product.html", context)
-```
-
-- Membuat berkas HTML bernama `create_product.html` pada `main/templates` untuk membuat kerangka halaman form dengan menambahan potongan kode berikut:
+- Membuat file bernama `create_product.html` pada folder `template` di dalam folder `main`
 ```html
 {% extends 'base.html' %} 
 
@@ -226,52 +210,36 @@ def create_product(request):
 {% endblock %}
 ```
 
-- Menampilkan data produk dalam bentuk table pada `main.html` serta menambahkan tombol Add New Item yang akan mendirect user ke halaman form dengan menambahkkan fungsi baru yaitu `create_product` dengan parameter `request`
+### Menambahkan 5 fungsi views untuk melihat objek yang sudah ditambahkan dalam format HTML, JSON, XML by ID, dan JSON by ID
 
-```html
+- Membuat fungsi `create_product` pada `views.py` dengan parameter `request` untuk melakukan rendering halaman form serta mengubah fungsi `show_main` untuk menghitung jumlah item yang disimpan (Bonus Question).
 
-{% extends 'base.html' %}
-
-{% block content %}
-    <h1>Lontongistic</h1>
-    <h2>Your digital inventory maestro!</h2>
-
-    <h5>Name:</h5>
-    <p>{{name}}</p>
-
-    <h5>Class:</h5>
-    <p>{{class}}</p>
-    <table border="1px">
-        <tr>
-            <th align="center">Name</th>
-            <th align="center">Amount</th>
-            <th align="center">Description</th>
-            <th align="center">Category</th>
-            <th align="center">Date Added</th>
-        </tr>
+```python
+def show_main(request):
+    items = Item.objects.all()
+    items_total = 0
+    for item in items:
+        items_total += item.amount
     
-        {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-    
-        {% for item in items %}
-            <tr>
-                <td align="center">{{item.name}}</td>
-                <td align="center">{{item.amount}}</td>
-                <td align="center">{{item.description}}</td>
-                <td align="center">{{item.category}}</td>
-                <td align="center">{{item.date_added}}</td>
-            </tr>
-        {% endfor %}
-    </table>
-    <h5>Anda menyimpan {{items_total}} item pada aplikasi ini</h5>
-    <br />
-    
-    <a href="{% url 'main:create_product' %}">
-        <button>
-            Add New Item
-        </button>
-    </a>
-    
-{% endblock content %}
+    context = {
+        'app' : 'Lontongistic',
+        'name': 'Reyhan Zada Virgiwibowo',
+        'class': 'PBP C',
+        'items' : items,
+        'items_total' : int(items_total)
+    }
+
+    return render(request, "main.html", context)
+
+def create_product(request):
+    form = ProductForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "create_product.html", context)
 ```
 
 - Membuat fungsi yang menerima parameter request pada `views.py` di `main` dalam bentuk JSON maupun XML dan akan menyimpan hasil query dari seluruh data yang ada pada `Item`, serta menambahkan return function berupa `HttpResponse` yang berisi parameter data hasil qeury yang sudah diserialisasi.
@@ -315,7 +283,6 @@ urlpatterns = [
 <img src="/images/postman_json.png">
 
 - JSON by ID
-
 <img src="/images/postman_json_id.png>
 
 - XML
@@ -323,5 +290,4 @@ urlpatterns = [
 <img src="/images/postman_xml.png">
 
 - XML by ID
-
 <img src="/images/postman_xml_id.png>
