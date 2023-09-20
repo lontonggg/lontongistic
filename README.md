@@ -283,11 +283,21 @@ urlpatterns = [
 <img src="/images/postman_json.png">
 
 - JSON by ID
+<<<<<<< HEAD
 <img src="/images/postman_json_id.png>
+=======
+
+<img src="/images/postman_json_id.png">
+>>>>>>> 45242df68a4518b2de8c06afc413354ad757545d
 
 - XML
 
 <img src="/images/postman_xml.png">
 
 - XML by ID
+<<<<<<< HEAD
 <img src="/images/postman_xml_id.png>
+=======
+
+<img src="/images/postman_xml_id.png">
+>>>>>>> 45242df68a4518b2de8c06afc413354ad757545d
