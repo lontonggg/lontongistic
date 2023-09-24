@@ -283,13 +283,19 @@ urlpatterns = [
 <img src="/images/postman_json.png">
 
 - JSON by ID
+<<<<<<< HEAD
 <img src="/images/postman_json_id.png>
+=======
+
+<img src="/images/postman_json_id.png">
+>>>>>>> 082a6800a18d11268dd0424eea927309c532485c
 
 - XML
 
 <img src="/images/postman_xml.png">
 
 - XML by ID
+<<<<<<< HEAD
 <img src="/images/postman_xml_id.png>
 
 </details>
@@ -633,7 +639,4 @@ def logout_user(request):
 ```
 
 </details>
-
-
-
 
