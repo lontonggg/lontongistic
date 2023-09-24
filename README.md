@@ -330,7 +330,7 @@ Penggunaan keduanya menjadi penting untuk menjaga keamanan, privasi user, mengon
 
 Jawab :
 
-Cookies dalam konteks aplikasi web adalah semacam data kecil yang disimpan di dalam perangkat pengguna oleh server web yang nantinya akan dikirim kembali ke server saat perangkat user tersebut melakukan request ke situs web yang sama.
+Cookies dalam konteks aplikasi web adalah semacam data kecil yang disimpan di dalam perangkat pengguna oleh server web yang nantinya akan dikirim kembali ke server saat perangkat user tersebut melakukan request ke situs web yang sama. Django mengelola data sesi pengguna dengan menggunakan cookies untuk menyimpan session ID untuk mengidentifikasi sesi yang terakhir dibuka oleh user. Data dari session yang sebenarnya disimpan di dalam database yang nantinya dapat diakses menggunakan session ID. Hal ini akan meningkatkan keamanan data karena data tidak disimpan di dalam cookies yang lebih rentan terhadap serangan dibandingkan database.
 
 
 ### 4. Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?
