@@ -1,7 +1,7 @@
 import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages  
@@ -9,7 +9,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from main.forms import ProductForm
 from main.models import Item
-
 
 @login_required(login_url='/login')
 def show_main(request):
@@ -59,7 +58,6 @@ def show_json_by_id(request, id):
 
 def register(request):
     form = UserCreationForm()
-
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -89,3 +87,20 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def increase_item_amount(request, id):
+    item = get_object_or_404(Item, pk=id)
+    item.amount += 1
+    item.save()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+def decrease_item_amount(request, id):
+    item = get_object_or_404(Item, pk=id)
+    item.amount -= 1
+    item.save()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+def remove_item(request, id):
+    item = get_object_or_404(Item, pk=id)
+    item.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))

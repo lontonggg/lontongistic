@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <style>
+        table, tr, th, td{
+            border: 1px solid black;
+            padding-right: 10px;
+            padding-left: 10px;
+            align-self: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
     <h1>Lontongistic</h1>
     <h2>Your digital inventory maestro!</h2>
 
@@ -9,13 +19,16 @@
 
     <h5>Class:</h5>
     <p>{{class}}</p>
-    <table border = 5px>
-        <tr style="border: 10px; border-color: black; border-radius:10px;">
+    <table>
+        <tr>
             <th align="center">Name</th>
             <th align="center">Amount</th>
             <th align="center">Description</th>
             <th align="center">Category</th>
             <th align="center">Date Added</th>
+            <th align="center">Increase Amount</th>
+            <th align="center">Decrease Amount</th>
+            <th align="center">Remove Item</th>
         </tr>
     
         {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
@@ -27,7 +40,26 @@
                 <td align="center">{{item.description}}</td>
                 <td align="center">{{item.category}}</td>
                 <td align="center">{{item.date_added}}</td>
+                <td align="center">
+                    <form method="post" action="{% url 'main:increase_item_amount' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Increase</button>
+                    </form>
+                </td>
+                <td align="center">
+                    <form method="post" action="{% url 'main:decrease_item_amount' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Decrease</button>
+                    </form>
+                </td>
+                <td align="center">
+                    <form method="post" action="{% url 'main:remove_item' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
             </tr>
+
         {% endfor %}
     </table>
     <h5>Anda menyimpan {{items_total}} item pada aplikasi ini</h5>
@@ -38,7 +70,9 @@
             Add New Item
         </button>
     </a>
+    
     <h5>Sesi terakhir login: {{ last_login }}</h5>
+
     <a href="{% url 'main:logout' %}">
         <button>
             Logout
