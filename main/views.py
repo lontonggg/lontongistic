@@ -96,8 +96,9 @@ def increase_item_amount(request, id):
 
 def decrease_item_amount(request, id):
     item = get_object_or_404(Item, pk=id)
-    item.amount -= 1
-    item.save()
+    if item.amount > 0:
+        item.amount -= 1
+        item.save()
     return HttpResponseRedirect(reverse('main:show_main'))
 
 def remove_item(request, id):
