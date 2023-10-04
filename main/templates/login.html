@@ -6,40 +6,43 @@
 
 {% block content %}
 
-<div class = "login">
-
-    <h1>Login</h1>
-
-    <form method="POST" action="">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-            </tr>
-                    
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td><input class="btn login_btn" type="submit" value="Login"></td>
-            </tr>
-        </table>
-    </form>
-
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}     
-        
-    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
-
+<div class = "login" style="background-image:url(https://cdn.visiteliti.com/article/2021-06/24/hihzEc6OEhQhDbao9DHi_1624529212.jpg); background-size: cover; background-position: center; background-repeat: no-repeat; background-size: cover;">
+    <section class="vh-100" style="backdrop-filter: blur(20px);">
+        <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5" >
+            <div class="card shadow-2-strong" style="border-radius: 1rem; background-color: whitesmoke;">
+                <div class="card-body p-5 text-center">
+                    <form method="POST" action="">
+                        <h1 class="mb-5" style="font-weight: bold; padding: 0px">Lontongistic</h1>
+                        <h1 class="mb-5" style="font-weight: lighter; padding: 0px; font-size: 20px;">"Your digital inventory maestro"</h1>
+                        {% csrf_token %}
+                        <h3 class="mb-5" style="text-align: left;">Login</h3>
+                        <div class="form-outline mb-4">
+                            <input type="text" name="username" placeholder="Username" class="form-control">
+                        </div>
+            
+                        <div class="form-outline mb-4">
+                            <input type="password" name="password" placeholder="Password" class="form-control">
+                        </div>
+                        <div class="mb-4" style="padding-bottom:20px;">
+                            Don't have an account yet? <a href="{% url 'main:register' %}" style="padding-left: 5px;"> Register Now </a>
+                        </div>
+                        {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}   
+                        <input class="btn btn-primary btn-lg btn-block" type="submit" value="Login" style="width: 200px; background-color: #708951;">
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </section>
 </div>
 
 {% endblock content %}

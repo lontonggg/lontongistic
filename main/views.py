@@ -13,9 +13,7 @@ from main.models import Item
 @login_required(login_url='/login')
 def show_main(request):
     items = Item.objects.filter(user=request.user)
-    items_total = 0
-    for item in items:
-        items_total += item.amount
+    items_total = items.count()
     
     context = {
         'app' : 'Lontongistic',

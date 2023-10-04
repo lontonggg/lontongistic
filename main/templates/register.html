@@ -5,30 +5,40 @@
 {% endblock meta %}
 
 {% block content %}  
-
-<div class = "login">
-    
-    <h1>Register</h1>  
-
-        <form method="POST" >  
-            {% csrf_token %}  
-            <table>  
-                {{ form.as_table }}  
-                <tr>  
-                    <td></td>
-                    <td><input type="submit" name="submit" value="Daftar"/></td>  
-                </tr>  
-            </table>  
-        </form>
-
-    {% if messages %}  
-        <ul>   
-            {% for message in messages %}  
-                <li>{{ message }}</li>  
-                {% endfor %}  
-        </ul>   
-    {% endif %}
-
-</div>  
+<div class="register" style="background-image:url(https://cdn.visiteliti.com/article/2021-06/24/hihzEc6OEhQhDbao9DHi_1624529212.jpg); background-size: cover; background-position: center; background-repeat: no-repeat; background-size: cover;">
+    <section class="vh-100" style="backdrop-filter: blur(20px);">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <form method="POST">
+                                {% csrf_token %} 
+                                <h1 class="mb-5" style="font-weight: bold;">Register</h1>
+                                <div class="form-outline mb-4">
+                                    <input type="text"  name={{form.username.name}} placeholder="Username" class="form-control form-control-lg"/>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <input type="password" name={{form.password1.name}} placeholder="Password" class="form-control form-control-lg"/>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <input type="password" name={{form.password2.name}} placeholder="Confirm Password" class="form-control form-control-lg"/>
+                                </div>
+                                <input class="btn btn-primary btn-lg btn-block" type="submit" name="submit" value="Daftar" style="width: 200px; background-color: #708951;"/>
+                            </form>
+                            {% if messages %}  
+                                <ul>   
+                                    {% for message in messages %}  
+                                        <li>{{ message }}</li>  
+                                        {% endfor %}  
+                                </ul>   
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
 
 {% endblock content %}

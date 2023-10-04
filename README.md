@@ -633,4 +633,263 @@ def logout_user(request):
 ...
 ```
 </details>
+<details>
+<summary><b>Tugas 5</h1></b></summary>
 
+ ## Tugas 5
+
+ ### 1. Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya.
+
+ Jawab : 
+   
+Elemen Selector
+Type selector akan memengaruhi semua elemen dengan tipe yang sama, contohnya seperti p, h, table, dll.
+
+Contoh : 
+```css
+p1{
+...
+}
+```
+
+Class Selector
+Class selector akan memengaruhi semua elemen yang memiliki kelas yang sama. Sebaiknya digunakan untuk mengatur gaya beberapa elemen yang dikelompokkan ke kelas yang sama secara bersamaan.
+
+Contoh :
+```css
+.card-header{
+...
+}
+```
+
+ID Selector
+ID Selector akan emengaruhi elemen dengan ID yang sesuai. Cocok untuk mengatur elemen tertentu yang hanya ada satu di halaman (ID harus unik).
+
+Contoh:
+```html
+#header{
+...
+}
+```
+  
+### 2. Jelaskan HTML5 Tag yang kamu ketahui. 
+
+Jawab : 
+ 
+HTML Memiliki ratusan tag dan memiliki kegunaannya masing-masing. Berikut adalah beberapa contoh tag HTML yang umum digunakan.
+- `<html>` Menandai awal dan akhir dokumen HTML.
+- `<head>` Berisi informasi tentang halaman web, seperti judul dan tautan ke stylesheet.
+- `<title>` Menentukan judul halaman web yang akan ditampilkan di tab browser.
+- `<link>` Menghubungkan halaman web dengan stylesheet eksternal atau favicon.
+- `<style>` Digunakan untuk menyisipkan CSS langsung ke dalam dokumen HTML.
+- `<body>` Memuat semua konten yang akan ditampilkan di halaman web.
+- `<h1>, <h2>, ..., <h6>` Membuat heading atau judul dengan level yang berbeda dimana h1 adalah yang tertinggi
+- `<p>` Membuat paragraf teks.
+- `<a>` Membuat tautan (link) ke halaman web atau sumber daya lainnya.
+- `<img>` Menampilkan gambar di halaman web.
+
+### 3. Jelaskan perbedaan antara margin dan padding.
+
+Jawab :
+
+Padding adalah ruang di dalam elemen atau jarak antara konten/isi elemen dengan batas elemen, sedangkan Margin adalah ruang di luar elemen atau jarak antara suatu elemen dengan elemen-elemen lain di sekitarnya
+
+### 4. Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?
+
+Jawab : 
+
+Perbedaan utama framework Tailwind dan Bootstrap adalah dari pendekatan mereka dalam membantu pengembangan web. Bootstrap memberikan banyak templates yang mudah untuk digunakan kembali serta dimodifikasi. Sedangkan Tailwind menggunakan pendekatan "utility-first" dimana Tailwind menyediakan komponen-komponen untuk dirakit dari simple menjadi kompleks sehingga memungkinkan kita untuk menggunakan kreatifitas kita secara penuh.
+
+Jika memerlukan pembuatan website yang simple, mudah, dan hanya memerlukan waktu singkat, lebih baik menggunakan bootstrap. Namun jika ingin membuat website from scratch dan melakukan kustomisasi yang kompleks dengan jangka waktu yang lama, lebih baik menggunakan tailwind.
+  
+### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+- Pertama, saya mengubah tampilan halaman `login` menggunakan bantuan dari bootstrap. Saya menggunakan `Card` untuk menjadi container utama dari form login saya. Untuk bagian formsnya, saya mengubah dari bentuk tabel dari tutorial dan memecahnya satu-satu agar bisa dimodikasi menggunakan bootstrap. Selain itu, saya juga mengubah background dari halaman `login` menjadi sebuah gambar agar terlihat lebih berwarna dan menarik. 
+ 
+login.html
+```html
+    ...
+    <section class="vh-100" style="backdrop-filter: blur(20px);">
+            <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5" >
+                <div class="card shadow-2-strong" style="border-radius: 1rem; background-color: whitesmoke;">
+                    <div class="card-body p-5 text-center">
+                        <form method="POST" action="">
+                            <h1 class="mb-5" style="font-weight: bold; padding: 0px">Lontongistic</h1>
+                            <h1 class="mb-5" style="font-weight: lighter; padding: 0px; font-size: 20px;">"Your digital inventory maestro"</h1>
+                            {% csrf_token %}
+                            <h3 class="mb-5" style="text-align: left;">Login</h3>
+                            <div class="form-outline mb-4">
+                                <input type="text" name="username" placeholder="Username" class="form-control">
+                            </div>
+                
+                            <div class="form-outline mb-4">
+                                <input type="password" name="password" placeholder="Password" class="form-control">
+                            </div>
+                            <div class="mb-4" style="padding-bottom:20px;">
+                                Don't have an account yet? <a href="{% url 'main:register' %}" style="padding-left: 5px;"> Register Now </a>
+                            </div>
+                            {% if messages %}
+                            <ul>
+                                {% for message in messages %}
+                                    <li>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}   
+                            <input class="btn btn-primary btn-lg btn-block" type="submit" value="Login" style="width: 200px; background-color: #708951;">
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </section>
+    ...
+```
+
+- Kemudian, saya menggunakan kode bootstrap yang serupa dengan login page saya untuk mengubah tampilan halaman `register` serta tampilan halaman untuk `menambahkan item` dan menyesuaikan kode sesuai dengan apa yang seharusnya di input.
+
+register.html
+```html
+    <section class="vh-100" style="backdrop-filter: blur(20px);">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <form method="POST">
+                                {% csrf_token %} 
+                                <h1 class="mb-5" style="font-weight: bold;">Register</h1>
+                                <div class="form-outline mb-4">
+                                    <input type="text"  name={{form.username.name}} placeholder="Username" class="form-control form-control-lg"/>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <input type="password" name={{form.password1.name}} placeholder="Password" class="form-control form-control-lg"/>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <input type="password" name={{form.password2.name}} placeholder="Confirm Password" class="form-control form-control-lg"/>
+                                </div>
+                                <input class="btn btn-primary btn-lg btn-block" type="submit" name="submit" value="Daftar" style="width: 200px; background-color: #708951;"/>
+                            </form>
+                            {% if messages %}  
+                                <ul>   
+                                    {% for message in messages %}  
+                                        <li>{{ message }}</li>  
+                                        {% endfor %}  
+                                </ul>   
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+```
+
+create_product.html
+```html
+    <section class="vh-100" style="backdrop-filter: blur(20px);">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100" style="padding: 10px;">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card shadow-2-strong" style="border-radius: 1rem; background-color: whitesmoke;">
+                        <div class="card-body p-5 text-center">
+                            <form method="POST" action="">
+                                {% csrf_token %}
+                                <h1 class="mb-5" style="font-weight: bold; padding: 0px">Add New Item</h1>
+                                <div class="form-outline mb-4">
+                                    <input type="text" name="name" placeholder="Item Name" class="form-control" >
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <input type="number" name="amount" placeholder="Amount" class="form-control">
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <input type="text" name="category" placeholder="Category" class="form-control">
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <input type="text" name="description" placeholder="Description" class="form-control" style="height: 100px;">
+                                </div>
+                                <input class="btn btn-primary btn-lg btn-block" type="submit" value="Add Item" style="width: 200px; background-color: #708951;"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+```
+
+- Selanjutnya, saya mengubah tampilan pada `main` page dimulai dengan menambahkan `navbar` menggunakan bantuan dari bootstrap. `Navbar` saya memiliki 3 tombol yaitu `Home`, `Add New Item`, serta `Logout`.
+
+```html
+    ...
+    <nav class="navbar navbar-expand-lg" style="background-color: #708951; border-radius: 10px;">
+        <div class="container-fluid">
+        <a class="navbar-brand" href="#" style="font-size: 40px; font-weight: bold; padding: 10px; vertical-align: auto; color: whitesmoke;">Lontongistic</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding: 20px;">
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="#" style="font-size: 25px; padding-left: 25px; padding-right: 25x; color: whitesmoke;">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'main:create_product' %}" style="font-size: 25px; padding-left: 25px; padding-right: 25px; color: whitesmoke;">Add Item</a>
+            </li>
+            </ul>
+            <span class="navbar-text">
+                <a class="nav-link" href="{% url 'main:logout' %}" style="font-size: 25px; font-weight: bold; padding-left: 20px; padding-right: 20px; color: whitesmoke;">
+                    Logout
+                </a>
+            </span>
+        </div>
+        </div>
+    </nav>
+    ...
+```
+
+- Lalu, saya juga menambahkan kontainer `Card` dengan bantuan bootstrap untuk merepresentasikan setiap barang yang disimpan.
+```html
+        ...
+        <div class="card-container">
+            {% for item in items %}
+            <div class="card">
+                <div class="card-header" style="font-weight: bold; background-color: #708951; color: white;">
+                    {{ item.name }}
+                </div>
+                <div class="card-body">
+                    <p>Amount: {{ item.amount }}</p>
+                    <p>Description: {{ item.description }}</p>
+                    <p>Category: {{ item.category }}</p>
+                    <p>Date Added: {{ item.date_added }}</p>
+                </div>
+                <div class="card-footer">
+                    <form method="post" action="{% url 'main:increase_item_amount' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary" style="background-color:  #708951; color: white;">Increase</button>
+                    </form>
+                    <form method="post" action="{% url 'main:decrease_item_amount' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" style="background-color:  #708951; color: white;">Discard</button>
+                    </form>
+                    <form method="post" action="{% url 'main:remove_item' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning" style="background-color:  #708951; color: white;">Remove</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        ...
+```
+
+- Dan terakhir, saya mengubah background utama dari halaman serta mengubah warna-warna pada tabel, card, dan juga navbar menggunakan CSS agar memperindah tampilan website, serta menyelesaikan soal bonus.
+
+Referensi Bootstrap :   
+Login, Register, dan Create Item : https://mdbootstrap.com/docs/standard/extended/login/#
+Navbar : https://getbootstrap.com/docs/5.2/components/navbar/  
+Cards : https://getbootstrap.com/docs/5.0/components/card/
+
+</details>

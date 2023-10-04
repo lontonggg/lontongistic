@@ -2,80 +2,185 @@
 
 {% block content %}
     <style>
-        table, tr, th, td{
+        .content{
+            background-image:url(https://cdn.visiteliti.com/article/2021-06/24/hihzEc6OEhQhDbao9DHi_1624529212.jpg); 
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat; 
+            background-size:cover;
+            
+        }
+
+        tr{
             border: 1px solid black;
-            padding-right: 10px;
-            padding-left: 10px;
+            padding-right: 20px;
+            padding-left: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            align-self: center;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: whitesmoke;
+        }
+
+        tr:last-child{
+            background-color: #a6b993;
+        }
+
+        table, th, td{
+            border: 1px solid black;
+            padding-right: 20px;
+            padding-left: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
             align-self: center;
             margin-left: auto;
             margin-right: auto;
         }
+        th{
+            background-color: #708951;
+            color: white;
+        }
+
+        .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        }
+
+        .card {
+            margin: 10px;
+            border-radius: 10px;
+            background-color: whitesmoke;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .card-header {
+            background-color: #708951;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+        
+        .card-footer{
+            display: flex;
+            justify-content: space-between; /* Adjust as needed */
+            padding: 10px;
+        }
+        
+        .card:last-child{
+            background-color: #a6b993;
+        }
     </style>
-    <h1>Lontongistic</h1>
-    <h2>Your digital inventory maestro!</h2>
+    <div class = "content">
+        <nav class="navbar navbar-expand-lg" style="background-color: #708951; border-radius: 10px;">
+            <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-size: 40px; font-weight: bold; padding: 10px; vertical-align: auto; color: whitesmoke;">Lontongistic</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding: 20px;">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#" style="font-size: 25px; padding-left: 25px; padding-right: 25x; color: whitesmoke;">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'main:create_product' %}" style="font-size: 25px; padding-left: 25px; padding-right: 25px; color: whitesmoke;">Add Item</a>
+                </li>
+                </ul>
+                <span class="navbar-text">
+                    <a class="nav-link" href="{% url 'main:logout' %}" style="font-size: 25px; font-weight: bold; padding-left: 20px; padding-right: 20px; color: whitesmoke;">
+                        Logout
+                    </a>
+                </span>
+            </div>
+            </div>
+        </nav>
+        <div class="body" style="backdrop-filter: blur(40px);">
+            <div class="sub-body">
+                <h5 style="padding: 20px; text-align: right; color: white;">Last Login : {{last_login}}</h5>
+                <h2 style="padding: 20px; text-align: center; color: white;">Welcome to your digital inventory, {{name}} from {{class}}</h2>
+            </div>
+            <div class="card-container">
+                {% for item in items %}
+                <div class="card">
+                    <div class="card-header" style="font-weight: bold; background-color: #708951; color: white;">
+                        {{ item.name }}
+                    </div>
+                    <div class="card-body">
+                        <p>Amount: {{ item.amount }}</p>
+                        <p>Description: {{ item.description }}</p>
+                        <p>Category: {{ item.category }}</p>
+                        <p>Date Added: {{ item.date_added }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <form method="post" action="{% url 'main:increase_item_amount' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary" style="background-color:  #708951; color: white;">Increase</button>
+                        </form>
+                        <form method="post" action="{% url 'main:decrease_item_amount' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" style="background-color:  #708951; color: white;">Discard</button>
+                        </form>
+                        <form method="post" action="{% url 'main:remove_item' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning" style="background-color:  #708951; color: white;">Remove</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <h5 style="padding: 20px; text-align: center; color: white;">There are {{items_total}} unique items in your inventory</h5>
 
-    <h5>Name:</h5>
-    <p>{{name}}</p>
+            <table>
+                <tr>
+                    <th align="center">Name</th>
+                    <th align="center">Amount</th>
+                    <th align="center">Description</th>
+                    <th align="center">Category</th>
+                    <th align="center">Date Added</th>
+                    <th align="center">Increase</th>
+                    <th align="center">Discard</th>
+                    <th align="center">Remove</th>
+                </tr>
+            
+                {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
+            
+                {% for item in items %}     
+                    <tr>
+                        <td align="center">{{item.name}}</td>
+                        <td align="center">{{item.amount}}</td>
+                        <td align="center">{{item.description}}</td>
+                        <td align="center">{{item.category}}</td>
+                        <td align="center">{{item.date_added}}</td>
+                        <td align="center">
+                            <form method="post" action="{% url 'main:increase_item_amount' item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" style="border-radius: 10px; font-weight: bold;">+</button>
+                            </form>
+                        </td>
+                        <td align="center">
+                            <form method="post" action="{% url 'main:decrease_item_amount' item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" style="border-radius: 10px; font-weight: bold;">-</button>
+                            </form>
+                        </td>
+                        <td align="center">
+                            <form method="post" action="{% url 'main:remove_item' item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" style="border-radius: 10px; font-weight: bold;">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
 
-    <h5>Class:</h5>
-    <p>{{class}}</p>
-    <table>
-        <tr>
-            <th align="center">Name</th>
-            <th align="center">Amount</th>
-            <th align="center">Description</th>
-            <th align="center">Category</th>
-            <th align="center">Date Added</th>
-            <th align="center">Increase Amount</th>
-            <th align="center">Decrease Amount</th>
-            <th align="center">Remove Item</th>
-        </tr>
+                {% endfor %}
+            </table>
+            <br />
+        </div>
+    </div>
     
-        {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-    
-        {% for item in items %}
-            <tr>
-                <td align="center">{{item.name}}</td>
-                <td align="center">{{item.amount}}</td>
-                <td align="center">{{item.description}}</td>
-                <td align="center">{{item.category}}</td>
-                <td align="center">{{item.date_added}}</td>
-                <td align="center">
-                    <form method="post" action="{% url 'main:increase_item_amount' item.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Increase</button>
-                    </form>
-                </td>
-                <td align="center">
-                    <form method="post" action="{% url 'main:decrease_item_amount' item.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Decrease</button>
-                    </form>
-                </td>
-                <td align="center">
-                    <form method="post" action="{% url 'main:remove_item' item.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Remove</button>
-                    </form>
-                </td>
-            </tr>
-
-        {% endfor %}
-    </table>
-    <h5>Anda menyimpan {{items_total}} item pada aplikasi ini</h5>
-    <br />
-    
-    <a href="{% url 'main:create_product' %}">
-        <button>
-            Add New Item
-        </button>
-    </a>
-    
-    <h5>Sesi terakhir login: {{ last_login }}</h5>
-
-    <a href="{% url 'main:logout' %}">
-        <button>
-            Logout
-        </button>
-    </a>
 {% endblock content %}
