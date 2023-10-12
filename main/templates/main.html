@@ -3,12 +3,23 @@
 {% block content %}
     <style>
         .content{
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0; 
             background-image:url(https://cdn.visiteliti.com/article/2021-06/24/hihzEc6OEhQhDbao9DHi_1624529212.jpg); 
             background-size: cover; 
             background-position: center; 
             background-repeat: no-repeat; 
             background-size:cover;
             
+        }
+
+        .body{
+            width: 100vw;
+            height: 100vh;
+            margin: 0; 
+            padding: 0;
         }
 
         tr{
@@ -36,6 +47,7 @@
             align-self: center;
             margin-left: auto;
             margin-right: auto;
+            text-align: center;
         }
         th{
             background-color: #708951;
@@ -43,17 +55,18 @@
         }
 
         .card-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .card {
-            margin: 10px;
+            margin: 50px;
             border-radius: 10px;
             background-color: whitesmoke;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 400px;
+            height: 300px;
         }
 
         .card-header {
@@ -68,7 +81,7 @@
         
         .card-footer{
             display: flex;
-            justify-content: space-between; /* Adjust as needed */
+            justify-content: space-between;
             padding: 10px;
         }
         
@@ -91,6 +104,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'main:create_product' %}" style="font-size: 25px; padding-left: 25px; padding-right: 25px; color: whitesmoke;">Add Item</a>
                 </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal" style="font-size: 25px; padding-left: 25px; padding-right: 25px; color: whitesmoke;">Add Item by AJAX</button>
+                </li>
                 </ul>
                 <span class="navbar-text">
                     <a class="nav-link" href="{% url 'main:logout' %}" style="font-size: 25px; font-weight: bold; padding-left: 20px; padding-right: 20px; color: whitesmoke;">
@@ -105,82 +121,110 @@
                 <h5 style="padding: 20px; text-align: right; color: white;">Last Login : {{last_login}}</h5>
                 <h2 style="padding: 20px; text-align: center; color: white;">Welcome to your digital inventory, {{name}} from {{class}}</h2>
             </div>
-            <div class="card-container">
-                {% for item in items %}
-                <div class="card">
-                    <div class="card-header" style="font-weight: bold; background-color: #708951; color: white;">
-                        {{ item.name }}
-                    </div>
-                    <div class="card-body">
-                        <p>Amount: {{ item.amount }}</p>
-                        <p>Description: {{ item.description }}</p>
-                        <p>Category: {{ item.category }}</p>
-                        <p>Date Added: {{ item.date_added }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <form method="post" action="{% url 'main:increase_item_amount' item.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-primary" style="background-color:  #708951; color: white;">Increase</button>
-                        </form>
-                        <form method="post" action="{% url 'main:decrease_item_amount' item.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger" style="background-color:  #708951; color: white;">Discard</button>
-                        </form>
-                        <form method="post" action="{% url 'main:remove_item' item.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-warning" style="background-color:  #708951; color: white;">Remove</button>
-                        </form>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            <h5 style="padding: 20px; text-align: center; color: white;">There are {{items_total}} unique items in your inventory</h5>
-
-            <table>
-                <tr>
-                    <th align="center">Name</th>
-                    <th align="center">Amount</th>
-                    <th align="center">Description</th>
-                    <th align="center">Category</th>
-                    <th align="center">Date Added</th>
-                    <th align="center">Increase</th>
-                    <th align="center">Discard</th>
-                    <th align="center">Remove</th>
-                </tr>
-            
-                {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-            
-                {% for item in items %}     
-                    <tr>
-                        <td align="center">{{item.name}}</td>
-                        <td align="center">{{item.amount}}</td>
-                        <td align="center">{{item.description}}</td>
-                        <td align="center">{{item.category}}</td>
-                        <td align="center">{{item.date_added}}</td>
-                        <td align="center">
-                            <form method="post" action="{% url 'main:increase_item_amount' item.id %}">
-                                {% csrf_token %}
-                                <button type="submit" style="border-radius: 10px; font-weight: bold;">+</button>
-                            </form>
-                        </td>
-                        <td align="center">
-                            <form method="post" action="{% url 'main:decrease_item_amount' item.id %}">
-                                {% csrf_token %}
-                                <button type="submit" style="border-radius: 10px; font-weight: bold;">-</button>
-                            </form>
-                        </td>
-                        <td align="center">
-                            <form method="post" action="{% url 'main:remove_item' item.id %}">
-                                {% csrf_token %}
-                                <button type="submit" style="border-radius: 10px; font-weight: bold;">Remove</button>
-                            </form>
-                        </td>
-                    </tr>
-
-                {% endfor %}
-            </table>
-            <br />
+            <div class="card-container" id="card-product"> </div>
+            <h5 id="item-amount" style="padding: 20px; text-align: center; color: white;"></h5>
+            <br/>
         </div>
     </div>
     
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="col-form-label">Amount:</label>
+                            <input type="number" class="form-control" id="amount" name="amount" min="1"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="col-form-label">Category:</label>
+                            <textarea class="form-control" id="category" name="category"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        async function getProducts() {
+            return fetch("{% url 'main:get_item_json' %}").then((res) => res.json())
+        }
+
+        async function refreshProducts() {
+            const products = await getProducts()
+            document.getElementById("card-product").innerHTML = ""
+            let htmlStringCards = ``
+            let totalItem = 0
+            products.forEach((item) => {
+                htmlStringCards += `
+                <div class="card">
+                    <div class="card-header" style="font-weight: bold; background-color: #708951; color: white;">${item.fields.name}</div>
+                    <div class="card-body">
+                        <p>Amount: ${item.fields.amount}</p>
+                        <p>Description: ${item.fields.description}</p>
+                        <p>Category: ${item.fields.category}</p>
+                        <p>Date Added: ${item.fields.date_added}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href='increase_item_amount/${item.pk}'>
+                            <button type="submit" class="btn btn-primary" style="background-color:  #708951; color: white;">Increase</button>
+                        </a>
+                        <a href='decrease_item_amount/${item.pk}'>
+                            <button type="submit" class="btn btn-danger" style="background-color:  #708951; color: white;">Decrease</button>
+                        </a>
+                        <a href='remove_item/${item.pk}'>
+                            <button type="submit" class="btn btn-warning" style="background-color:  #708951; color: white;">Delete</button>
+                        </a>
+                        <button class="btn btn-warning" style="background-color:  #708951; color: white;" onclick="deleteItem(${item.pk})">Delete by AJAX</button>
+                    </div>
+                </div>
+                `
+                totalItem++
+            })
+            document.getElementById("card-product").innerHTML = htmlStringCards
+            document.getElementById("item-amount").innerHTML = `There are ${totalItem} unique items in your inventory`
+        }
+
+        function addItem() {
+            fetch("{% url 'main:add_item_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshProducts)
+
+            document.getElementById("form").reset()
+            return false
+        }
+
+        function deleteItem(id) {
+            fetch("/delete-item-ajax/" + id + "/", {
+                method: "POST"
+            }).then(refreshProducts)
+
+            document.getElementById("form").reset()
+            return false
+        }
+
+        refreshProducts()
+        document.getElementById("button_add").onclick = addItem
+    </script>
+        
 {% endblock content %}

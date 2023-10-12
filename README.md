@@ -1,7 +1,7 @@
 ## Nama    : Reyhan Zada Virgiwibowo
 ## NPM     : 2206081723
 ## Kelas   : PBP C
-## Link Aplikasi : https://lontongistic.adaptable.app/main/
+## Link Aplikasi : http://reyhan-zada-tugas.pbp.cs.ui.ac.id/
 
 <details>
 <summary><b>Tugas 2</b></summary>
@@ -10,7 +10,7 @@
 ### 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 Jawab : 
 - Step pertama adalah membuat virtual environment terlebih dahulu dengan cara menulis perintah `python -m venv env` di cmd
-- Aktifkan virtual environment dengan menulis perintah `env\Scripts\activate` di cmd.
+- Aktifkan virtual environment dengan menulis perintah `env\Script\activate` di cmd.
 - Kemudian buatlah file requirements.txt dan isi dengan dependensi yang diperlukan dan install dengan menjalankan perintah `pip install -r requirements.txt`
 - Jalankan project Django dengan menjalankan perintah `django-admin startproject lontongistic`.
 - Menambahkan `"*"` pada `ALLOWED_HOSTS` pada `settings.py ` dan membuat file `.gitignore`
@@ -891,5 +891,260 @@ Referensi Bootstrap :
 Login, Register, dan Create Item : https://mdbootstrap.com/docs/standard/extended/login/#
 Navbar : https://getbootstrap.com/docs/5.2/components/navbar/  
 Cards : https://getbootstrap.com/docs/5.0/components/card/
+
+</details>
+<details>
+<summary><b>Tugas 6</h1></b></summary>
+
+## Tugas 6
+
+### 1. Jelaskan perbedaan antara asynchronous programming dengan synchronous programming.
+
+Jawab : 
+
+- Synchronous Programming
+
+Pada synchronous programming, kode akan dieksekusi secara berurutan, sehingga jika ada blok kode yang melakukan operasi dan memakan waktu lama, maka program akan berhenti dan menunggu operasi tersebut selesai. Hal ini dapat menyebabkan terjadinya "blocking" pada aplikasi jika operasi memakan waktu yang lama.
+
+- Asynchronous Programming 
+
+Pada asynchronous programming, program dapat terus berjalan tanpa harus menunggu operasi yang memakan waktu. Hal tersebut dapat dilakukan dengan menggunakan callback, promise, atau async/await untuk menangani hasil operasi tersebut saat hasilnya telah tersedia. Dengan demikian, "blocking" pada aplikasi dapat dihindari menggunakan asynchronous programming.
+
+Dapat disimpulkan bahwa synchronous programming mungkin kurang responsif terhadap input pengguna pada suatu aplikasi dan cenderung dapat mengalami "blocking". Sedangkan asynchronous programming lebih responsif terhadap input pengguna karena tidak menghentikan program demi menunggu operasi yang memerlukan waktu.
+
+### 2. Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+
+Paradigma Event-Driven Programming adalah pendekatan pemrograman di mana kode merespons peristiwa atau kejadian yang terjadi dalam sistem atau aplikasi seperti mengklik tombol, mengisi forms, serta peristiwa lain seperti pemrosesan data yang diambil dari server melalui AJAX.
+
+Berikut adalah contoh penerapan event-driven programming yang saya gunakan pada program saya untuk tugas ini. 
+
+```html
+...
+<script>
+    ...
+    function addProduct() {
+        fetch("{% url 'main:add_product_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshProducts)
+
+        document.getElementById("form").reset()
+        return false
+    }
+
+    document.getElementById("button_add").onclick = addProduct
+    ...
+</script>
+...
+
+```
+
+Potongan kode tersebut berasal dari file `main.html`, dimana pada bagian `script`, terdapat fungsi yang bernama `addProduct` yang berfungsi untuk menambahkan product ke dalam database menggunakan AJAX. Lalu pada baris kode `document.getElementById("button_add").onclick = addProduct`, baris tersebut berfungsi untuk menjalankan fungsi `addProduct` saat button yang memiliki id `button_add` ditekan.
+
+### 3. Jelaskan penerapan asynchronous programming pada AJAX.
+
+Asynchronous JavaScript and XMLHTTP atau biasa disebut AJAX merupakan salah satu konsep yang menerapkan metode asynchronous dalam menjalankan pekerjaannya. Biasa nya AJAX digunakan untuk melakukan permintaan data (request) dan menangani sebuah tanggapan (handling response), baik response dalam bentuk XML, Javascript ataupun JSON dari sebuah Rest API.
+
+### 4. Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan. 
+
+Fetch API adalah bagian dari JavaScript modern. Fetch API menggunakan Promise untuk mengelola respons HTTP yang membuat kode lebih bersih dan mudah dikelola. Sedangkan jQuery adalah sebuah build-in library dari JavaScript yang lebih lawas dan dirancang untuk menyederhanakan pengembangan web. jQuery menyediakan berbagai fungsi dan metode yang mempermudah tugas-tugas umum dalam pengembangan web, seperti manipulasi dokumen HTML, pengiriman permintaan HTTP asinkron (AJAX), animasi, dan penanganan peristiwa. 
+
+Menurut saya, Fetch API adalah pilihan yang lebih baik karena lebih modern, kode yang dihasilkan lebih bersih, serta memiliki performa yang lebih baik dan lebih cocok digunakan untuk mengembangkan aplikasi web modern. 
+
+### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+- Membuat fungsi `get_item_json` pada `views.py` untuk mengambil data dalam bentuk JSON yang berisi sebagai berikut :
+
+```python
+def get_item_json(request):
+    product_item = Item.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product_item))
+```
+
+- Membuat fungsi untuk menambahkan produk menggunakan AJAX dimulai dengan mengimport `csrf_exempt` dan membuat fungsi baru bernama `add_item_ajax` :
+
+```python
+@csrf_exempt
+def add_item_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        category = request.POST.get("category")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_product = Item(name=name, amount=amount, category=category, description=description, user=user)
+        new_product.save()
+
+
+        return HttpResponse(b"CREATED", status=201)
+    return HttpResponseNotFound()
+```
+
+- Mengambil Item pada `main.html` menggunakan `fetch()` API dengan menambahkan tag block `<script>` di akhir kode HTML dan membuat fungsi asynchronous `getProducts` seperti berikut :
+
+```html
+<script>
+        async function getProducts() {
+            return fetch("{% url 'main:get_item_json' %}").then((res) => res.json())
+        }
+...
+```
+
+- Menghapus cards yang telah saya buat sebelumnya hingga hanya menjadi `<div class="card-container" id="card-product"></div>` dan membuat fungsi asynchronous `refreshProducts()` pada blok `<script>` untuk memunculkan cards menggunakan AJAX dan merefresh data dari item serta mengupdate informasi jumlah item yang tersimpan secara asynchronous :
+
+```html
+<script>
+    ...
+    async function refreshProducts() {
+        const products = await getProducts()
+        document.getElementById("card-product").innerHTML = ""
+        let htmlStringCards = ``
+        let totalItem = 0
+        products.forEach((item) => {
+            htmlStringCards += `
+            <div class="card">
+                <div class="card-header" style="font-weight: bold; background-color: #708951; color: white;">${item.fields.name}</div>
+                <div class="card-body">
+                    <p>Amount: ${item.fields.amount}</p>
+                    <p>Description: ${item.fields.description}</p>
+                    <p>Category: ${item.fields.category}</p>
+                    <p>Date Added: ${item.fields.date_added}</p>
+                </div>
+                <div class="card-footer">
+                    <a href='increase_item_amount/${item.pk}'>
+                        <button type="submit" class="btn btn-primary" style="background-color:  #708951; color: white;">Increase</button>
+                    </a>
+                    <a href='decrease_item_amount/${item.pk}'>
+                        <button type="submit" class="btn btn-danger" style="background-color:  #708951; color: white;">Decrease</button>
+                    </a>
+                    <a href='remove_item/${item.pk}'>
+                        <button type="submit" class="btn btn-warning" style="background-color:  #708951; color: white;">Delete</button>
+                    </a>
+                    <button class="btn btn-warning" style="background-color:  #708951; color: white;" onclick="deleteItem(${item.pk})">Delete by AJAX</button>
+                </div>
+            </div>
+            `
+            totalItem++
+        })
+        document.getElementById("card-product").innerHTML = htmlStringCards
+        document.getElementById("item-amount").innerHTML = `There are ${totalItem} unique items in your inventory`
+    }
+    
+</script>
+```
+
+- Menambahkan modal baru sebagai form berbentuk popup untuk menambahkan item menggunakan AJAX
+
+```html
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="col-form-label">Amount:</label>
+                            <input type="number" class="form-control" id="amount" name="amount"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="col-form-label">Category:</label>
+                            <textarea class="form-control" id="category" name="category"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+```
+
+serta menambahkan button untuk memunculkan form baru tersebut pada navbar dengan menambahkan :
+
+```html
+<button class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal" style="font-size: 25px; padding-left: 25px; padding-right: 25px; color: whitesmoke;">Add Item by AJAX</button>
+```
+- Membuat fungsi pada bagian `<script>` untuk menambahkan Item :
+
+```html
+<script>
+...
+function addItem() {
+            fetch("{% url 'main:add_item_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshProducts)
+
+            document.getElementById("form").reset()
+            return false
+        }
+```
+
+kemudian menambahkan fungsi tersebut sebagai fungsi `onClick` pada button yang terdapat di dalam modal : 
+```html
+<script>
+    ...
+    document.getElementById("button_add").onclick = addItem
+```
+
+- Membuat fungsi untuk menghapus item menggunakan AJAX pada `views.py` bernama `delete_item_ajax` yang memiliki parameter berupa id dari item yang akan dihapus :
+
+```python
+@csrf_exempt
+def delete_item_ajax(request, id):
+    item = Item.objects.get(pk=id)
+    item.delete()
+    return HttpResponse(b"DELETED", status=201)
+```
+
+- Menambahkan fungsi `deleteProduct(id)` pada bagian `<script>` di `main.html` untuk menghapus item dengan AJAX :
+
+```html
+<script>
+    ...
+    function deleteItem(id) {
+        fetch("/delete-item-ajax/" + id + "/", {
+            method: "POST"
+        }).then(refreshProducts)
+
+        document.getElementById("form").reset()
+        return false
+    }
+
+```
+
+dan menambahkan button pada cards untuk menghapus item menggunakan AJAX pada `main.html` dan menambahkan atribut `onclick="deleteItem(${item.pk})"` untuk memanggil fungsi deleteItem saat button di click :
+
+```html
+<button class="btn btn-warning" style="background-color:  #708951; color: white;" onclick="deleteItem(${item.pk})">Delete by AJAX</button>
+```
+
+- Melakukan perintah collecstatic dengan melakukan mapping untuk output file static ke directory yang sesuai dengan memodifikasi bagian `STATIC_URL` dan `STATIC_ROOT` pada `settings.py`:
+
+```python
+STATIC_URL = 'static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+```
+
+lalu menjalankan perintah collectstatic pada terminal : 
+```
+python manage.py collectstatic
+```
 
 </details>

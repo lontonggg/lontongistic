@@ -1,5 +1,5 @@
 import datetime
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.core import serializers
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from main.forms import ProductForm
 from main.models import Item
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required(login_url='/login')
 def show_main(request):
@@ -96,10 +97,40 @@ def decrease_item_amount(request, id):
     item = get_object_or_404(Item, pk=id)
     if item.amount > 0:
         item.amount -= 1
-        item.save()
+        if item.amount == 0:
+            item.delete()
+        else:
+            item.save()
+    
     return HttpResponseRedirect(reverse('main:show_main'))
 
 def remove_item(request, id):
     item = get_object_or_404(Item, pk=id)
     item.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
+
+def get_item_json(request):
+    product_item = Item.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product_item))
+
+@csrf_exempt
+def add_item_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        category = request.POST.get("category")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_product = Item(name=name, amount=amount, category=category, description=description, user=user)
+        new_product.save()
+
+
+        return HttpResponse(b"CREATED", status=201)
+    return HttpResponseNotFound()
+
+@csrf_exempt
+def delete_item_ajax(request, id):
+    item = Item.objects.get(pk=id)
+    item.delete()
+    return HttpResponse(b"DELETED", status=201)
