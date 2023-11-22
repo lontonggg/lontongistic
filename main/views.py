@@ -148,9 +148,9 @@ def create_product_flutter(request):
             user = request.user,
             name = data["name"],
             price = int(data["price"]),
+            category = data["category"],
             description = data["description"]
         )
-
         new_product.save()
 
         return JsonResponse({"status": "success"}, status=200)
